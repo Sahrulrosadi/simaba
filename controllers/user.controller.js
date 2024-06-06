@@ -2,9 +2,9 @@ import User from "../models/User.js"
 
 export const create = (req, res) => {
     const newUser = new User({
-        nama_lengkap: req.body.nama_lengkap,
-        asal_sekolah: req.body.asal_sekolah,
-        tahun_lulus: req.body.tahun_lulus,
+        fullname: req.body.fullname,
+        from_school: req.body.from_school,
+        graduation_year: req.body.graduation_year,
         username: req.body.username,
         email: req.body.email,
         password: req.body.password
@@ -48,6 +48,53 @@ export const findOne = (req, res) =>{
     })
 }
 
+// export const findUsername = (req, res) =>{
+//     User.findByUsername(req.params.username, (err, data) =>{
+//         if(err) {
+//             console.log(err)
+//             if (err.type === 'not_found' ){
+//                 res.status(404).send ({
+//                     message: `not found username :${req.params.username}`
+//                 })
+//                 return
+//             }else {
+//                 res.status(500).send({message: 'exist some error'})
+//             }
+//         }else{
+//             res.send(data)
+//         }
+//     })
+// }
+
+
+// export const findUsername = (req, res) => {
+//     const username = req.body.username || req.params.username; // Dukung req.body dan req.params
+
+//     if (!username) {
+//         res.status(400).send({
+//             message: 'Username is required'
+//         });
+//         return;
+//     }
+
+//     User.findByUsername(username, (err, data) => {
+//         if (err) {
+//             console.log(err);
+//             if (err.type === 'not_found') {
+//                 res.status(404).send({
+//                     message: `Not found username: ${username}`
+//                 });
+//             } else {
+//                 res.status(500).send({
+//                     message: 'Some error occurred while retrieving the user'
+//                 });
+//             }
+//         } else {
+//             console.log(req.params.username);
+//             res.send(data);
+//         }
+//     });
+// };
 
 
 export const update = (req, res) =>{

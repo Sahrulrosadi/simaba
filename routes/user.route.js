@@ -5,6 +5,7 @@ const userRouter = Router()
 
 userRouter.get('/', findAll)
 userRouter.post('/', create)
+// userRouter.get('/:username', findUsername)
 userRouter.get('/:id', findOne)
 userRouter.put('/:id', update)
 userRouter.delete('/:id', destroy)

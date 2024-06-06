@@ -1,9 +1,9 @@
 import sql from'./connection.js'
 
 const User = function (user){
-    this.nama_lengkap = user.nama_lengkap
-    this.asal_sekolah = user.asal_sekolah
-    this.tahun_lulus = user.tahun_lulus
+    this.fullname = user.fullname
+    this.from_school = user.from_school
+    this.graduation_year = user.graduation_year
     this.username  = user.username
     this.email = user.email
     this.password = user.password
@@ -20,9 +20,10 @@ User.create = (newUser, result) =>{
 }
 
 User.getAll = (page, pageSize, result) =>{
+   
     const offset = (page -1) * pageSize;
     console.log(`Page: ${page}, PageSize: ${pageSize}, Offset: ${offset}`);
-    const query = `SELECT id, nama_lengkap, asal_sekolah, tahun_lulus, username FROM ${table} LIMIT ?,?`
+    const query = `SELECT id, fullname, from_school, graduation_year, username FROM ${table} WHERE role = 'user' LIMIT ?,?`
     sql.query(query, [offset, pageSize], (err, res)=>{
         if (err){
             result(err, null)
@@ -31,7 +32,7 @@ User.getAll = (page, pageSize, result) =>{
 }
 
 User.findById = (id, result) => {
-    sql.query(`SELECT id, nama_lengkap, asal_sekolah, tahun_lulus, username FROM ${table} WHERE id = ${id}`, (err, res) => {
+    sql.query(`SELECT id,  fullname, from_school, graduation_year, username FROM ${table} WHERE id = ${id}`, (err, res) => {
         if (err) {
             result(err, null)
             return
@@ -48,9 +49,9 @@ User.findById = (id, result) => {
 }
 
 User.update = (id, data, result) => {
-    sql.query(`UPDATE ${table} SET nama_lengkap = ?, asal_sekolah = ?, tahun_lulus = ?, 
+    sql.query(`UPDATE ${table} SET  fullname = ?, from_school = ?, graduation_year = ?, 
     username = ?, email = ?, password = ? WHERE id = ?`, 
-        [data.nama_lengkap, data.asal_sekolah, data.tahun_lulus, 
+        [data.fullname, data.from_school, data.graduation_year, 
             data.username, data.email, data.password, id], (err, res) =>{
             if(err) {
                 result(err, null)
@@ -69,7 +70,7 @@ User.update = (id, data, result) => {
 
 
 User.findByUsername = (username, result) =>{
-    sql.query (`SELECT id, nama_lengkap, asal_sekolah, tahun_lulus FROM ${table} WHERE username = ?`,username, (err, res) =>{
+    sql.query (`SELECT SELECT id, fullname, from_school, graduation_year, username FROM users WHERE username = ? `, (err, res) =>{
         if (err){
             result(err,null)
             return
@@ -83,6 +84,30 @@ User.findByUsername = (username, result) =>{
         result({type: 'not_found'})
     })
 }
+
+
+
+// User.findByUsername = (username, result) => {
+//     const query = `SELECT id, fullname, from_school, graduation_year, username FROM users WHERE username = ?`;
+//         sql.query(query, [username], (err, res) => {
+//             if (err) {
+//             console.log("error: ", err);
+//             result(err, null);
+//             return;
+//             }
+
+//             if (res.length) {
+//                 console.log("found user: ", res[0]);
+//                 result(null, res[0]);
+//                 return;
+//             }
+
+//              // Not found User with the username
+//              result({ type: 'not_found' }, null);
+//          });
+// }
+
+
 
 
 User.delete = (id, result) =>{
